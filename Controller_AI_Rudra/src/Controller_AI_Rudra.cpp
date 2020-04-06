@@ -327,10 +327,13 @@ void Controller_AI_Rudra::tick(float deltaTSec)
         }
         if (m_pPlayer->getElixir() >= 8)
         {
-          
+            std::cout << "Enough ELixir to Spawn Strong Defense" << std::endl;
+
 
             if (RightTroops > LeftTroops)
             {
+                std::cout << "More troops on the right" << std::endl;
+
                 Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
@@ -343,6 +346,8 @@ void Controller_AI_Rudra::tick(float deltaTSec)
 
             else
             {
+                std::cout << "More troops on the left" << std::endl;
+
                 Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY );
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
@@ -359,10 +364,14 @@ void Controller_AI_Rudra::tick(float deltaTSec)
             float archx = isOpponentMobPresent(iEntityStats::Archer);
             float knightx = isOpponentMobPresent(iEntityStats::Swordsman);
             float giantx = isOpponentMobPresent(iEntityStats::Giant);
+            std::cout << "Enough ELixir to Spawn counter defense" << std::endl;
+
             if (archx > 0)
             {
                 if (archx > KingX)
                 {
+                    std::cout << "Spawned defense against Archers on the right" << std::endl;
+
                     Vec2 ArcherSpawnWorld(ArcherRightSpawnX, ArcherSpawnY);
                     Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
@@ -370,6 +379,8 @@ void Controller_AI_Rudra::tick(float deltaTSec)
                 }
                 else
                 {
+                    std::cout << "Spawned defense against Archers on the left" << std::endl;
+
                     Vec2 ArcherSpawnWorld(ArcherLeftSpawnX, ArcherSpawnY);
                     Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
@@ -381,12 +392,17 @@ void Controller_AI_Rudra::tick(float deltaTSec)
             {
                 if (knightx > KingX)
                 {
+                    std::cout << "Spawned defense against Knight on the right" << std::endl;
+
                     Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
                     Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
                 }
                 else
                 {
+
+                    std::cout << "Spawned defense against Knight on the left" << std::endl;
+
                     Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
                     Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
@@ -398,12 +414,16 @@ void Controller_AI_Rudra::tick(float deltaTSec)
             {
                 if (giantx > KingX)
                 {
+                    std::cout << "Spawned defense against Giant on the right" << std::endl;
+
                     Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
                     Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
                 }
                 else
                 {
+                    std::cout << "Spawned defense against Giant on the left" << std::endl;
+
                     Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
                     Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                     m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
@@ -414,8 +434,12 @@ void Controller_AI_Rudra::tick(float deltaTSec)
 
         else if (m_pPlayer->getElixir() >= 3 && m_pPlayer->getElixir() < 5)
         {
+        std::cout << "Spawning defense to stall attack" << std::endl;
+
             if (RightTroops > LeftTroops)
             {
+                std::cout << "Spawned knight on right to stall attack" << std::endl;
+
                 Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
@@ -423,6 +447,8 @@ void Controller_AI_Rudra::tick(float deltaTSec)
 
             else
             {
+                std::cout << "Spawned knight on left to stall attack" << std::endl;
+
                 Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
