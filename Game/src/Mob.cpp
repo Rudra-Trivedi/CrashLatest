@@ -173,6 +173,7 @@ std::vector<Entity*> Mob::checkCollision()
     Game& game = Game::get();
     Player& northPlayer = game.getPlayer(true);
     Player& southPlayer = game.getPlayer(false);
+    float thissize = this->getStats().getSize();
     
 
     if (this->getPosition().y + this->getStats().getSize()/2 > (RIVER_TOP_Y) /*- ((this->getStats().getSize())/2)*/ && this->getPosition().y - this->getStats().getSize()/2 < (RIVER_BOT_Y) /*+ ((this->getStats().getSize()) /2)*/)
@@ -193,31 +194,44 @@ std::vector<Entity*> Mob::checkCollision()
 
     // collision inside bridge
 
-    /*if ((this->m_Pos.y > RIVER_TOP_Y) && (this->m_Pos.y < RIVER_BOT_Y))
+    if ((this->m_Pos.y > RIVER_TOP_Y) && (this->m_Pos.y < RIVER_BOT_Y))
     {
-        if (this->m_Pos.x < (RIGHT_BRIDGE_CENTER_X - BRIDGE_WIDTH))
+        if (this->m_Pos.x > KingX)
         {
-            this->m_Pos.x = RIGHT_BRIDGE_CENTER_X - BRIDGE_WIDTH;
+            if (!(this->m_Pos.x - (thissize/2)  > (RIGHT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)) && this->m_Pos.x + (thissize/2) < (RIGHT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2))))
+            {
+                if (this->m_Pos.x - (thissize / 2) > (RIGHT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)))
+                {
+                    this->m_Pos.x = (RIGHT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)) + thissize/2;
+                }
+
+                else if(this->m_Pos.x + (thissize / 2) < (RIGHT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2)))
+                {
+                    this->m_Pos.x = (RIGHT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2)) - thissize/2;
+                }
+            }
         }
 
-        else if (this->m_Pos.x > (RIGHT_BRIDGE_CENTER_X + BRIDGE_WIDTH))
-        {
-            this->m_Pos.x = RIGHT_BRIDGE_CENTER_X + BRIDGE_WIDTH;
 
+        else if (this->m_Pos.x < KingX)
+        {
+             if (!(this->m_Pos.x - (thissize/2) > (LEFT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)) && this->m_Pos.x + (thissize/2) < (LEFT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2))))
+             {
+                 if (this->m_Pos.x - (thissize / 2) < (LEFT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)))
+                 {
+                    this->m_Pos.x = (LEFT_BRIDGE_CENTER_X - (BRIDGE_WIDTH / 2)) + thissize/2;
+                 }
+
+                 else if(this->m_Pos.x + (thissize / 2) < (LEFT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2)))
+                 {
+                    this->m_Pos.x = (LEFT_BRIDGE_CENTER_X + (BRIDGE_WIDTH / 2)) - thissize/2;
+                 }
+
+             }
         }
 
-        else if (this->m_Pos.x > (LEFT_BRIDGE_CENTER_X - BRIDGE_WIDTH))
-        {
-            this->m_Pos.x = LEFT_BRIDGE_CENTER_X - BRIDGE_WIDTH;
-
-        }
-
-        else if (this->m_Pos.x < (LEFT_BRIDGE_CENTER_X + BRIDGE_WIDTH))
-        {
-            this->m_Pos.x = LEFT_BRIDGE_CENTER_X + BRIDGE_WIDTH;
-
-        }
-    }*/
+    
+    }
 
     
 
