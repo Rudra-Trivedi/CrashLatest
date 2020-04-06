@@ -23,6 +23,7 @@
 #pragma once
 
 #include "/Game ai/New folder/CrashLoyal-master/Interface/src/iController.h"
+#include "/Game ai/New folder/CrashLoyal-master/Game/src/Entity.h"
 
 
 
@@ -36,12 +37,21 @@ public:
 
     void getattackstatus();
 
+    void GetEnemiesOnField();
+
+    bool isGiantPresent();
+
     void GetOpponentBuildings();
 
     float nearestXforSpawn(float x, float x1);
 
-    float nearestXforDefenceGiant(float x, float x1);
+    float nearestXforDefence(float x, float x1, Entity* otherMob);
+    
+    float isOpponentMobPresent(iEntityStats::MobType mobType);
 
-    void GetEnemiesOnField();
+  
+
+
+
 
 };
