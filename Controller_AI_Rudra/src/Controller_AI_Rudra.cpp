@@ -27,8 +27,6 @@
 #include "/Game ai/New folder/CrashLoyal-master/Interface/src/EntityStats.h"
 #include "/Game ai/New folder/CrashLoyal-master/Interface/src/iPlayer.h"
 #include "/Game ai/New folder/CrashLoyal-master/Interface/src/Vec2.h"
-#include "/Game ai/New folder/CrashLoyal-master/Game/src/Game.h"
-#include "/Game ai/New folder/CrashLoyal-master/Game/src/Player.h"
 
 
 // X for giant spawn area
@@ -61,25 +59,26 @@ static const float ArcherSpawnY = 0.f;
 
 static const Vec2 ksGiantPos(LEFT_BRIDGE_CENTER_X, RIVER_TOP_Y - 5.f);
 static const Vec2 ksArcherPos(LEFT_BRIDGE_CENTER_X, 0.f);
+
 bool isattacking = true;
+
+
+Game& g = Game::get();
+//Player& northPlayer = g.getPlayer(m_pPlayer->isNorth());
+//Player& southPlayer = g.getPlayer(!(m_pPlayer->isNorth()));
+
 
 
 
 
 std::vector<Entity*> OpponentBuildings;
 std::vector<Entity*> OpponentMobs;
-Game& g = Game::get();
-Player& northPlayer = g.getPlayer(true);
-Player& southPlayer = g.getPlayer(false);
-
-int signmul = northPlayer.isNorth() ? 1 : -1;
-
 
 
 // Returns true if there's already a giant present
 bool Controller_AI_Rudra::isGiantPresent()
 {
-    for (Entity* pMob : northPlayer.getMobs())
+    for (Entity* pMob : g.getPlayer(m_pPlayer->isNorth()).getMobs())
     {
         if (!pMob->isDead())
         {
@@ -99,7 +98,7 @@ bool Controller_AI_Rudra::isGiantPresent()
 
 float Controller_AI_Rudra::isOpponentMobPresent(iEntityStats::MobType mobType)
 {
-    for (Entity* othermob : southPlayer.getMobs())
+    for (Entity* othermob : g.getPlayer(!(m_pPlayer->isNorth())).getMobs())
     {
         if (!othermob->isDead())
         {
@@ -118,7 +117,7 @@ float Controller_AI_Rudra::isOpponentMobPresent(iEntityStats::MobType mobType)
 void Controller_AI_Rudra::getattackstatus()
 {
 
-    if (!southPlayer.getMobs().empty())
+    if (!g.getPlayer(!(m_pPlayer->isNorth())).getMobs().empty())
     {
         isattacking = false;
     }
@@ -133,7 +132,7 @@ void Controller_AI_Rudra::getattackstatus()
 // Getting the opponent buildings
 void Controller_AI_Rudra::GetOpponentBuildings()
 {
-    OpponentBuildings = southPlayer.getBuildings();
+    OpponentBuildings = g.getPlayer(!(m_pPlayer->isNorth())).getBuildings();
 }
 
 
@@ -217,7 +216,7 @@ float Controller_AI_Rudra::nearestXforDefence(float x, float x1, Entity* OMob)
 
 void Controller_AI_Rudra::GetEnemiesOnField()
 {
-    for (Entity* othermob : southPlayer.getMobs())
+    for (Entity* othermob : g.getPlayer(!(m_pPlayer->isNorth())).getMobs())
     {
         if (!othermob->isDead())
         {
@@ -234,6 +233,8 @@ void Controller_AI_Rudra::GetEnemiesOnField()
 void Controller_AI_Rudra::tick(float deltaTSec)
 {
     assert(m_pPlayer);
+   
+    
 
     //Get Enemies on Field
     GetEnemiesOnField();
@@ -295,13 +296,13 @@ void Controller_AI_Rudra::tick(float deltaTSec)
 
         else if(m_pPlayer->getElixir() >= 4 && m_pPlayer->getElixir() < 6)
         {
-            if (isGiantPresent())
+             if (isGiantPresent())
             {
                 Vec2 ArcherSpawnWorld(nearestXforSpawn(ArcherLeftSpawnX, ArcherRightSpawnX), ArcherSpawnY);
                 Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
-            }
+            } 
         }
 
 
@@ -313,7 +314,7 @@ void Controller_AI_Rudra::tick(float deltaTSec)
     {
         int RightTroops = 0;
         int LeftTroops = 0;
-        for (Entity* othermob : southPlayer.getMobs())
+        for (Entity* othermob : g.getPlayer(!(m_pPlayer->isNorth())).getMobs())
         {
             if (othermob->getPosition().x > KingX)
             {
@@ -334,7 +335,7 @@ void Controller_AI_Rudra::tick(float deltaTSec)
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
 
-                Vec2 ArcherSpawnWorld(ArcherRightSpawnX - (signmul * 1.f), KnightSpawnY - (signmul * 2.f));
+                Vec2 ArcherSpawnWorld(ArcherRightSpawnX , KnightSpawnY - 1.f);
                 Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
@@ -342,11 +343,11 @@ void Controller_AI_Rudra::tick(float deltaTSec)
 
             else
             {
-                Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
+                Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY );
                 Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
 
-                Vec2 ArcherSpawnWorld(ArcherLeftSpawnX + (signmul * 1.f), KnightSpawnY - (signmul  * 2.f));
+                Vec2 ArcherSpawnWorld(ArcherLeftSpawnX , KnightSpawnY - 1.f);
                 Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
                 m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);

@@ -24,6 +24,10 @@
 
 #include "/Game ai/New folder/CrashLoyal-master/Interface/src/iController.h"
 #include "/Game ai/New folder/CrashLoyal-master/Game/src/Entity.h"
+#include "/Game ai/New folder/CrashLoyal-master/Game/src/Game.h"
+#include "/Game ai/New folder/CrashLoyal-master/Game/src/Player.h"
+
+
 
 
 
@@ -49,8 +53,8 @@ public:
     
     float isOpponentMobPresent(iEntityStats::MobType mobType);
 
-  
 
+   
 
 
 
