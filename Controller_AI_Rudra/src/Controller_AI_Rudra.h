@@ -45,6 +45,10 @@ public:
 
     bool isGiantPresent();
 
+    bool isKnightPresent();
+
+    bool isArcherPresent();
+
     void GetOpponentBuildings();
 
     float nearestXforSpawn(float x, float x1);

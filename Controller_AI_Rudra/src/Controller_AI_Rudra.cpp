@@ -96,6 +96,45 @@ bool Controller_AI_Rudra::isGiantPresent()
     return false;
 }
 
+bool Controller_AI_Rudra::isKnightPresent()
+{
+    for (Entity* pMob : g.getPlayer(m_pPlayer->isNorth()).getMobs())
+    {
+        if (!pMob->isDead())
+        {
+            if (pMob->getStats().getMobType() == iEntityStats::Swordsman)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    return false;
+}
+bool Controller_AI_Rudra::isArcherPresent()
+{
+    for (Entity* pMob : g.getPlayer(m_pPlayer->isNorth()).getMobs())
+    {
+        if (!pMob->isDead())
+        {
+            if (pMob->getStats().getMobType() == iEntityStats::Archer)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            continue;
+        }
+    }
+
+    return false;
+}
+
 float Controller_AI_Rudra::isOpponentMobPresent(iEntityStats::MobType mobType)
 {
     for (Entity* othermob : g.getPlayer(!(m_pPlayer->isNorth())).getMobs())
@@ -436,23 +475,49 @@ void Controller_AI_Rudra::tick(float deltaTSec)
         {
         std::cout << "Spawning defense to stall attack" << std::endl;
 
-            if (RightTroops > LeftTroops)
+            if (!isKnightPresent())
             {
-                std::cout << "Spawned knight on right to stall attack" << std::endl;
+                 if (RightTroops > LeftTroops)
+                 {
+                     std::cout << "Spawned knight on right to stall attack" << std::endl;
 
-                Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
-                Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
-                m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
+                     Vec2 KnightSpawnWorld(KnightRightSpawnX, KnightSpawnY);
+                     Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
+                     m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
+                 }
+
+                else
+                {
+                    std::cout << "Spawned knight on left to stall attack" << std::endl;
+
+                    Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
+                    Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
+                    m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
+
+                }
             }
 
-            else
+            else if(!isArcherPresent())
             {
-                std::cout << "Spawned knight on left to stall attack" << std::endl;
+                if (RightTroops > LeftTroops)
+                {
+                    std::cout << "Knight Present sending Archers on right" << std::endl;
 
-                Vec2 KnightSpawnWorld(KnightLeftSpawnX, KnightSpawnY);
-                Vec2 KnightGamePos = KnightSpawnWorld.Player2Game(m_pPlayer->isNorth());
-                m_pPlayer->placeMob(iEntityStats::Swordsman, KnightGamePos);
+                    Vec2 ArcherSpawnWorld(ArcherRightSpawnX, ArcherSpawnY);
+                    Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
+                    m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
+                    m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
+                }
 
+                else
+                {
+                    std::cout << "Sending archers to supoort knight on the right" << std::endl;
+
+                    Vec2 ArcherSpawnWorld(ArcherLeftSpawnX, ArcherSpawnY);
+                    Vec2 ArcherGamePos = ArcherSpawnWorld.Player2Game(m_pPlayer->isNorth());
+                    m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
+                    m_pPlayer->placeMob(iEntityStats::Archer, ArcherGamePos);
+                }
             }
         }
     }
